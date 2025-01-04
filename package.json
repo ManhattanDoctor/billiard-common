@@ -1,0 +1,14 @@
+{
+    "name": "@billiard/common",
+    "version": "1.0.0",
+    "description": "",
+    "main": "",
+    "author": "Renat Gubaev",
+    "license": "ISC",
+    "dependencies": {
+        "@ts-core/language": "~3.0.34",
+        "@ts-core/common": "~3.0.55",
+        "@ts-core/oauth": "~3.1.15"
+    },
+    "devDependencies": {}
+}
