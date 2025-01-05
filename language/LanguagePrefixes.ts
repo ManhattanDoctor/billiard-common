@@ -9,13 +9,9 @@ export let LanguageProjects: Array<ILanguageProjectSettings> = [
             'Custom.json',
 
             'User.json',
-            'Comment.json',
 
             'Payment.json',
-            'Management.json',
-
-            'Main.json',
-            'About.json'
+            'Management.json'
         ]
     }
 ]

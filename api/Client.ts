@@ -1,18 +1,15 @@
-import { TransportHttp, ITransportHttpSettings, LoggerLevel } from '@ts-core/common';
-import { ILogger, TransformUtil, ITraceable, TraceUtil } from '@ts-core/common';
+import { TransportHttp, ITransportHttpSettings, LoggerLevel, ILogger, TransformUtil, ITraceable, TraceUtil } from '@ts-core/common';
+import { IOAuthPopUpDto } from '@ts-core/oauth';
 import { IInitDto, IInitDtoResponse, ILoginDto, ILoginDtoResponse } from './login';
-import { User } from '../user';
+import { User, USER_URL } from '../user';
 import { ICommentAddDto, ICommentAddDtoResponse, ICommentEditDto, ICommentEditDtoResponse, ICommentGetDtoResponse, ICommentListDto, ICommentListDtoResponse, ICommentRemoveDtoResponse } from './comment';
 import { Comment } from '../comment';
 import { IPeopleListDto, IPeopleListDtoResponse } from './people';
-import { IManagementCoinAccountListDto, IManagementCoinAccountListDtoResponse } from './management';
-import { IUserEditDto, IUserEditDtoResponse, IUserGetDtoResponse, IUserListDto, IUserListDtoResponse, IUserMasterListDto, IUserMasterListDtoResponse, UserUID } from './user';
+import { IUserEditDto, IUserEditDtoResponse, IUserGetDtoResponse, IUserListDto, IUserListDtoResponse, IUserSearchDtoResponse, UserUID } from './user';
 import { IStatisticsGetDtoResponse } from './statistics';
-import { IOAuthPopUpDto } from '@ts-core/oauth';
 import { CoinBonusDto, CoinStatusGetDtoResponse, ICoinAccountsGetDto, ICoinBalanceEditDto, ICoinStatusGetDto } from './coin';
 import { IPaymentListDto, IPaymentListDtoResponse, IPaymentTransactionListDto, IPaymentTransactionListDtoResponse } from './payment';
 import { Payment, PaymentTransaction } from '../payment';
-import { CoinAccount } from '../coin';
 import { ITelegramAccountAddDto, ITelegramAccountAddDtoResponse, ITelegramAccountRemoveDtoResponse } from './telegram';
 import * as _ from 'lodash';
 
@@ -75,8 +72,18 @@ export class Client extends TransportHttp<ITransportHttpSettings> {
         return TransformUtil.toClass(User, item);
     }
 
-    public async userMasterList(data?: IUserMasterListDto): Promise<IUserMasterListDtoResponse> {
-        let items = await this.call<IUserMasterListDtoResponse, IUserMasterListDto>(`${USER_URL}`, { data: TraceUtil.addIfNeed(data) });
+    public async userList(data?: IUserListDto): Promise<IUserListDtoResponse> {
+        let item = await this.call<IUserListDtoResponse, IUserListDto>(USER_URL, { data: TraceUtil.addIfNeed(data) });
+        item.items = TransformUtil.toClassMany(User, item.items);
+        return item;
+    }
+
+    public async userSearch(value: string): Promise<IUserSearchDtoResponse> {
+        let url = USER_SEARCH_URL;
+        if (!_.isEmpty(value)) {
+            url += `/${value}`;
+        }
+        let items = await this.call<IUserSearchDtoResponse>(url);
         return TransformUtil.toClassMany(User, items);
     }
 
@@ -163,36 +170,6 @@ export class Client extends TransportHttp<ITransportHttpSettings> {
         return this.call<ITelegramAccountRemoveDtoResponse, void>(`${TELEGRAM_URL}`, { method: 'delete' });
     }
 
-    //--------------------------------------------------------------------------
-    //
-    // 	Management Methods
-    //
-    //--------------------------------------------------------------------------
-
-    public async managementUserList(data?: IUserListDto): Promise<IUserListDtoResponse> {
-        let item = await this.call<IUserListDtoResponse, IUserListDto>(MANAGEMENT_USER_URL, { data: TraceUtil.addIfNeed(data) });
-        item.items = TransformUtil.toClassMany(User, item.items);
-        return item;
-    }
-
-    public async managementCoinAccountList(data?: IManagementCoinAccountListDto): Promise<IManagementCoinAccountListDtoResponse> {
-        let item = await this.call<IManagementCoinAccountListDtoResponse, IManagementCoinAccountListDto>(MANAGEMENT_COIN_ACCOUNT_URL, { data: TraceUtil.addIfNeed(data) });
-        item.items = TransformUtil.toClassMany(CoinAccount, item.items);
-        return item;
-    }
-
-    public async managementCommentList(data?: ICommentListDto): Promise<ICommentListDtoResponse> {
-        let item = await this.call<ICommentListDtoResponse, ICommentListDto>(MANAGEMENT_COMMENT_URL, { data: TraceUtil.addIfNeed(data) });
-        item.items = TransformUtil.toClassMany(Comment, item.items);
-        return item;
-    }
-
-    public async managementPaymentList(data?: IPaymentListDto): Promise<IPaymentListDtoResponse> {
-        let item = await this.call<IPaymentListDtoResponse, IPaymentListDto>(MANAGEMENT_PAYMENT_URL, { data: TraceUtil.addIfNeed(data) });
-        item.items = TransformUtil.toClassMany(Payment, item.items);
-        return item;
-    }
-
     // --------------------------------------------------------------------------
     //
     //  Other Methods
@@ -235,41 +212,27 @@ export class Client extends TransportHttp<ITransportHttpSettings> {
 }
 
 export const PREFIX_URL = 'api/';
+
 export const VK_URL = PREFIX_URL + 'vk';
-export const GEO_URL = PREFIX_URL + 'geo';
-export const USER_URL = PREFIX_URL + 'user';
+
 export const INIT_URL = PREFIX_URL + 'init';
 export const LOGIN_URL = PREFIX_URL + 'login';
 export const LOGOUT_URL = PREFIX_URL + 'logout';
 export const LOGOUT_OTHERS_URL = PREFIX_URL + 'logoutOthers';
 
+export const USER_SEARCH_URL = PREFIX_URL + 'userSearch';
+
 export const OAUTH_URL = PREFIX_URL + 'oauth';
-export const CLOCK_URL = PREFIX_URL + 'clock';
 export const PEOPLE_URL = PREFIX_URL + 'people';
-export const LANGUAGE_URL = PREFIX_URL + 'locale';
+export const LANGUAGE_URL = PREFIX_URL + 'language';
 export const STATISTICS_URL = PREFIX_URL + 'statistics';
 
+
 export const COIN_URL = PREFIX_URL + 'coin';
-export const VOICE_URL = PREFIX_URL + 'voice';
 export const COMMENT_URL = PREFIX_URL + 'comment';
 export const PAYMENT_URL = PREFIX_URL + 'payment';
 export const TELEGRAM_URL = PREFIX_URL + 'telegram';
 export const PAYMENT_TRANSACTION_URL = PREFIX_URL + 'paymentTransaction';
-
-export const TAROT_SPREAD_URL = PREFIX_URL + 'tarot/spread';
-export const TAROT_SPREAD_URL_ID = PREFIX_URL + 'tarot/spread-id';
-export const TAROT_SPREAD_DAY_URL = PREFIX_URL + 'tarot/spread-day';
-export const TAROT_SPREAD_MEANING_URL = PREFIX_URL + 'tarot/spread-meaning';
-export const TAROT_SPREAD_SHOWCASE_URL = PREFIX_URL + 'tarot/spread-showcase';
-export const TAROT_SPREAD_MEANING_AI_URL = PREFIX_URL + 'tarot/spread-meaning-ai';
-
-export const MANAGEMENT_USER_URL = PREFIX_URL + 'management/user';
-export const MANAGEMENT_COMMENT_URL = PREFIX_URL + 'management/comment';
-export const MANAGEMENT_PAYMENT_URL = PREFIX_URL + 'management/payment';
-export const MANAGEMENT_COIN_ACCOUNT_URL = PREFIX_URL + 'management/coinAccount';
-export const MANAGEMENT_TAROT_SPREAD_URL = PREFIX_URL + 'management/tarot/spread';
-export const MANAGEMENT_TAROT_SPREAD_MEANING_URL = PREFIX_URL + 'management/tarot/spread-meaning';
-export const MANAGEMENT_TAROT_SPREAD_MEANING_AI_URL = PREFIX_URL + 'management/tarot/spread-meaning-ai';
 
 export const PAYMENT_ORDER_INIT_URL = PREFIX_URL + 'payment/selfwork';
 export const PAYMENT_CALLBACK_URL = PREFIX_URL + 'payment/callback/moneta';

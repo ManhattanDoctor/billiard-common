@@ -1,7 +1,10 @@
-import { IPaginable, IPagination } from '@ts-core/common';
-import { ITraceable } from '@ts-core/common';
-import { User, UserPreferences, UserStatistics } from '../../user';
+import { IPaginable, IPagination, IFilterableProperties, ITraceable } from '@ts-core/common';
+import { User, UserAccount, UserPreferences, UserStatistics } from '../../user';
 
-export interface IUserListDto extends IPaginable<User, Partial<UserPreferences & UserStatistics>>, ITraceable { }
+export interface IUserListDto extends IPaginable<User, UserPreferences>, ITraceable {
+    account?: IFilterableProperties<UserAccount>;
+    statistics?: IFilterableProperties<UserStatistics>;
+    preferences?: IFilterableProperties<UserPreferences>;
+}
 
 export interface IUserListDtoResponse extends IPagination<User> { }

@@ -8,6 +8,7 @@ export class User {
     public login: string;
     public status: UserStatus;
     public resource: UserResource;
+    public lastLogin: Date;
 
     @Type(() => Date)
     public created: Date;

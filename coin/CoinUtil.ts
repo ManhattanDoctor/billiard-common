@@ -20,6 +20,7 @@ export class CoinUtil {
     public static getDecimals(coinId: CoinId): number {
         switch (coinId) {
             case CoinId.RUB:
+            case CoinId.USD:
                 return 2;
             case CoinId.TOKEN:
                 return 0;

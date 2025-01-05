@@ -30,5 +30,8 @@ export enum PaymentTransactionItemType {
 export enum PaymentTransactionType {
     REFUND = 'REFUND',
     PURCHASE = 'PURCHASE',
-    CORRECTION = 'CORRECTION'
+    CORRECTION = 'CORRECTION',
+
+    DAILY_BONUS = 'DAILY_BONUS',
+    REGISTRATION_BONUS = 'REGISTRATION_BONUS',
 }
