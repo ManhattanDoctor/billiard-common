@@ -10,14 +10,14 @@ export class Comment {
 
     @Type(() => User)
     public user: User;
-    public userId: number;
 
     @Type(() => Date)
     public created: Date;
 }
 
 export enum CommentTargetType {
-
+    GAME = 'GAME',
+    GAME_SESSION = 'GAME_SESSION',
 }
 
 export const COMMENT_TEXT_MIN_LENGTH = 1;

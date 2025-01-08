@@ -1,30 +1,27 @@
 import { Type } from 'class-transformer';
-import { User } from '../user';
 import { GameBall } from './GameBall';
-import { GameFoul } from './GameFoul';
+import { GameResult } from './GameResult';
+import { GameSession } from './GameSession';
 import { GamePartner } from './GamePartner';
 
 export class Game {
     public id: number;
-    public name: string;
-    public type: GameType;
     public status: GameStatus;
-    public picture: string;
-
-    @Type(() => User)
-    public creator: User;
 
     @Type(() => GameBall)
     public balls: Array<GameBall>;
 
-    @Type(() => GameBall)
-    public fouls: Array<GameFoul>;
+    @Type(() => GameSession)
+    public session: GameSession;
 
+    // нужно для подсчета очков в колхозе и смены очередности игроков в рамках сессии
     @Type(() => GamePartner)
     public partners: Array<GamePartner>;
 
-    @Type(() => Date)
-    public created: Date;
+    @Type(() => GameResult)
+    public result?: GameResult;
+
+    public multiplier?: string;
 }
 
 export enum GameType {
@@ -35,15 +32,9 @@ export enum GameType {
     PYRAMID_COMBINED = 'PYRAMID_COMBINED' // Московская, Сибирка
 }
 
-export enum GamePermissionType {
-    CREATOR_ONLY = 'CREATOR_ONLY',
-    PARTNERS_ALL = 'PARTNERS_ALL',
-}
-
 export enum GameStatus {
-    CREATED = 'CREATED',
+    STARTED = 'STARTED',
     FINISHED = 'FINISHED',
     IN_PROGRESS = 'IN_PROGRESS',
     REMOVED = 'REMOVED'
 }
-
