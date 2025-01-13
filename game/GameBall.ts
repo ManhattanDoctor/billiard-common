@@ -1,30 +1,24 @@
-import { Type } from 'class-transformer';
-import { Game } from './Game';
 import { GamePartner } from './GamePartner';
 import { GameSessionTransaction } from './GameSessionTransaction';
 
 export class GameBall {
     public id: number;
     public tags?: Array<GameBallTag>;
-    public score?: string;
 
-    @Type(() => Game)
-    public game?: Game;
+    public gameId: number;
+    public gamePartnerId: number;
 
-    @Type(() => GameSessionTransaction)
-    public transaction?: GameSessionTransaction;
-
-    @Type(() => GamePartner)
-    public author: GamePartner;
+    public partner: GamePartner;
+    public transaction: GameSessionTransaction;
 }
 
 export enum GameBallTag {
     FOOL = 'FOOL', // дурак
     MINE = 'MINE', // свояк
-    ДУПЛЕТ = 'ДУПЛЕТ', // дуплет
     LAST = 'LAST', // последний забитый шар
-    CRUSH = 'CRUSH', // с разбоя
+    CRACK = 'CRACK', // с разбоя
     FIRST = 'FIRST', // первый забитый шар
+    DOUBLET = 'DOUBLET', // дуплет
 
     // фолы
     FOUL = 'FOUL',

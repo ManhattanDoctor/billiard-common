@@ -5,7 +5,7 @@ import { PaymentAccountId } from './Payment';
 export class PaymentTransaction implements ICoinAmount {
     id: number;
     type: PaymentTransactionType;
-    debet: PaymentAccountId;
+    debit: PaymentAccountId;
     credit: PaymentAccountId;
     amount: string;
     coinId: CoinId;

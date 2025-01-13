@@ -5,10 +5,9 @@ export class GamePartner {
     public id: number;
     public name: string;
     public status: GamePartnerStatus;
-    public picture: string;
 
-    @Type(() => User)
     public user?: User;
+    public isFavorite?: boolean;
 
     @Type(() => Date)
     public created: Date;
@@ -16,6 +15,9 @@ export class GamePartner {
 
 export enum GamePartnerStatus {
     ACTIVE = 'ACTIVE',
-    HIDDEN = 'HIDDEN'
+    REMOVED = 'REMOVED'
 }
+
+export const GAME_PARTNER_NAME_MIN_LENGTH = 3;
+export const GAME_PARTNER_NAME_MAX_LENGTH = 128;
 

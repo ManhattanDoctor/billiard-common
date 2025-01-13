@@ -1,18 +1,15 @@
 import { CoinId } from "../coin";
 import { GamePartner } from "./GamePartner";
 
-export class GameResult {
+export class GamePartnerResult {
     public id: number;
-}
-
-export class GamePartnerResult extends GameResult {
     public score: GamePartnerResultScore;
     public partner: GamePartner;
     public balance?: GamePartnerResultScore;
 }
 
 export class GamePartnerResultScore {
-    value: string; // относительное
-    amount: string; // абсолютное
+    score: number;
+    amount: string;
     coinId: CoinId;
 }

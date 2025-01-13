@@ -1,10 +1,10 @@
-import { User } from "../user";
+import { GamePartner } from "./GamePartner";
 
-export class GameSessionUserDecision {
+export class GameSessionPartnerDecision {
     public id: number;
-    public user: User;
     public type: GameSessionUserDecisionType;
     public value: GameSessionUserDecisionValue;
+    public partner: GamePartner;
 }
 
 export enum GameSessionUserDecisionType {
